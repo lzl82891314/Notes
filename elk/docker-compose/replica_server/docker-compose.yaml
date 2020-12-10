@@ -1,0 +1,26 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: elasticsearch_replica_instance
+    environment:
+      - node.name=replica
+      - network.host=0.0.0.0
+      - network.publish_host=10.32.202.178
+      - discovery.seed_hosts=192.168.61.171,10.32.202.178
+      - cluster.name=elastic_cluster
+      - cluster.initial_master_nodes=192.168.61.171
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elastic_data:/usr/share/elk/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+
+volumes:
+  elastic_data:
+    driver: local
