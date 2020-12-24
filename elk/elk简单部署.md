@@ -234,16 +234,45 @@ filebeat.config:
     path: ${path.config}/modules.d/*.yml
     reload.enabled: false
 
+filebeat.inputs: # 文本日志的配置路径
+- type: log
+  enabled: true
+  paths:
+    - /var/log/*.log
+
 output.elasticsearch:
-  hosts: ["elasticsearch:9200"] # 配置elasticsearch的端口
+  hosts: ["elasticsearch:9200"]
 
 # 4. metricbeat.yml
-metricbeat.config.modules:
-  path: ${path.config}/modules.d/*.yml
-  reload.enabled: false
+metricbeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
+
+metricbeat.modules: # 配置监控开关，比如此配置就是开启了system监控，关闭了docker监控，默认不加入就是关闭
+- module: system 
+  metricsets:
+    - "cpu"
+    - "memory"
+    - "network"
+  period: 10s
+  enabled: true
+- module: docker
+  metricsets:
+    - "container"
+    - "cpu"
+    - "diskio"
+    - "healthcheck"
+    - "info"
+    #- "image"
+    #- "memory"
+    #- "network"
+  hosts: ["unix:///var/run/docker.sock"]
+  period: 10s
+  enabled: false
 
 output.elasticsearch:
-  hosts: ["elasticsearch:9200"] # 配置elasticsearch的端口
+  hosts: ['elasticsearch:9200']
 ```
 
 上述四个配置文件，最主要的是elasticsearch的，这是整个系统能否启动的关键，其余三个默认配置就是这样，为了后期维护的便利性将其挂载出来，如果想省事可以不创建其余三个，当然对应的docker-compose中的挂载配置需要删除。
@@ -266,4 +295,4 @@ docker-compose down
 
 ![kibana_metricbeat_data](https://raw.githubusercontent.com/lzl82891314/Notes/main/elk/resource/kibana_metricbeat_data.png)
 
-至此，整个监控系统的简单部署就结束了，之后的任务就是配置集群或者采集点了，这些工作其实都是操作对应的采集器的配置文件即可完成，由于写文档的时候还没有具体的服务实体，因此无法给出具体的配置。
+至此，整个监控系统的简单部署就结束了，之后的任务就是配置集群或者采集点了，这些工作其实都是操作对应的采集器的配置文件即可完成，由于写文档的时候还没有具体的服务实体，因此无法给出具体的配置，但是，只需要操作挂载出来的配置文件即可实现。
