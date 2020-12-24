@@ -1,0 +1,71 @@
+version: "2.1"
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    container_name: elasticsearch
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    mem_limit: "2621440000"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - /mnt/work/elk/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - elasticsearch_data:/mnt/work/elk/elasticsearch/data
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      - elk_network
+  cerebro:
+    image: lmenezes/cerebro:0.9.2
+    container_name: cerebro
+    ports:
+      - 9000:9000
+    networks:
+      - elk_network
+    command:
+      - -Dhosts.0.host=http://elasticsearch:9200
+    depends_on: ['elasticsearch']
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.10.0
+    container_name: kibana
+    environment:
+      - I18N_LOCALE=zh-CN
+      - TIMELION_ENABLED=true
+    volumes:
+      - /mnt/work/elk/kibana/kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
+    networks:
+      - elk_network
+    depends_on: ['elasticsearch']
+  filebeat:
+    image: elastic/filebeat:7.10.0
+    container_name: filebeat
+    volumes:
+      - /mnt/work/elk/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - filebeat_data:/mnt/work/elk/filebeat/data
+    networks
+      - elk_network
+    restart: on-failure
+    depends_on: ['elasticsearch', 'kibana']
+  metricbeat:
+    image: elastic/metricbeat:7.10.0
+    container_name: metricbeat
+    volumes:
+      - /mnt/work/elk/metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: on-failure
+    depends_on: ['elasticsearch', 'kibana']
+
+volumes:
+  elasticsearch_data:
+    driver: local
+  filebeat_data:
+    driver: local
+
+networks:
+  elk_network:
+    driver: bridge

@@ -1,0 +1,7 @@
+cluster.name: forguncy-cloud
+node.name: master
+network.host: 0.0.0.0
+network.publish_host: 192.168.238.118
+discovery.seed_hosts: 192.168.238.118
+cluster.initial_master_nodes: 192.168.238.118
+bootstrap.memory_lock: true
