@@ -239,6 +239,7 @@ filebeat.inputs: # 文本日志的配置路径
   enabled: true
   paths:
     - /var/log/*.log
+    - /var/log/*/*.log # 递归搜索文件
 
 output.elasticsearch:
   hosts: ["elasticsearch:9200"]
