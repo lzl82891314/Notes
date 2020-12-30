@@ -1,0 +1,354 @@
+# 创建员工索引
+PUT staff
+{
+  "mappings": {
+    "properties": {
+      "name": {
+        "properties": {
+          "chinese": {
+            "type": "keyword"
+          },
+          "pinyin": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 50
+              }
+            }
+          },
+          "english": {
+            "type": "keyword"
+          },
+          "nick": {
+            "type": "keyword",
+            "null_value": "NULL"
+          }
+        }
+      },
+      "age": {
+        "type": "integer"
+      },
+      "gender": {
+        "type": "keyword"
+      },
+      "job": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "salary": {
+        "type": "integer"
+      },
+      "group": {
+        "properties": {
+          "name": {
+            "type": "keyword"
+          },
+          "level": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1
+  }
+}
+DELETE staff
+
+# 插入员工数据
+PUT /staff/_bulk
+{ "index" : {  "_id" : "1" } }
+{ "name": { "chinese": "钟代冬", "pinyin": "Zhong Daidong", "english": "David", "nick": "小萝卜" }, "age": 25, "gender": "male", "job": ["C# Programmer"], "salary": "18000", "group": { "name": "cloud", "level": "member" } }
+{ "index" : {  "_id" : "2" } }
+{ "name": {  "chinese": "徐希强", "pinyin": "Xu Xiqiang", "english": "Eric", "nick": "强哥" }, "age": 35, "gender": "male", "job": ["Architect"], "salary": "35000", "group": { "name": "cloud", "level": "leader" } }
+{ "index" : {  "_id" : "3" } }
+{ "name": { "chinese": "白凯瑟", "pinyin": "Bai kaise", "english": "Katherine", "nick": "凯瑟" }, "age": 25, "gender": "female", "job": ["C# Programmer", "Forguncy Programmer"], "salary": "20000", "group": { "name": "cloud", "level": "member" } }
+{ "index" : {  "_id" : "4" } }
+{ "name": { "chinese": "王润佳", "pinyin": "Wang runjia", "english": "Wayra", "nick": "小姑娘" }, "age": 23, "gender": "female", "job": ["C# Programmer", "Forguncy Programmer"], "salary": "15000", "group": { "name": "cloud", "level": "member" } }
+{ "index" : {  "_id" : "5" } }
+{ "name": { "chinese": "隋浩川", "pinyin": "Sui Haochuan", "english": "Charies", "nick": "川哥" }, "age": 28, "gender": "male", "job": ["C# Programmer", "Forguncy Programmer"], "salary": "23000", "group": { "name": "designer", "level": "member" } }
+{ "index" : {  "_id" : "6" } }
+{"name":{"chinese":"邓奥林","pinyin":"Deng Aolin","english":"Orrin","nick":"奥林"},"age":27,"gender":"male","job":["C# Programmer","Forguncy Programmer"],"salary":"25000","group":{"name":"designer","level":"leader"}}
+{"index":{"_id":"7"}}
+{"name":{"chinese":"曹青宇","pinyin":"Cao Qingyu","english":"Amy","nick":null},"age":26,"gender":"female","job":["C# Programmer","Forguncy Programmer"],"salary":"18000","group":{"name":"designer","level":"member"}}
+{"index":{"_id":"8"}}
+{"name":{"chinese":"阳函杏","pinyin":"Yang Hanxing","english":"Hilda","nick":"杏儿"},"age":18,"gender":"female","job":["C# Programmer","Forguncy Programmer"],"salary":"22000","group":{"name":"server","level":"member"}}
+{"index":{"_id":"9"}}
+{"name":{"chinese":"金志乔","pinyin":"Jin Zhiqiao","english":"Joe","nick":"乔儿"},"age":25,"gender":"male","job":["C# Programmer","Forguncy Programmer"],"salary":"20000","group":{"name":"server","level":"member"}}
+{"index":{"_id":"10"}}
+{"name":{"chinese":"杨楠","pinyin":"Yang Nan","english":"Nancy","nick":null},"age":24,"gender":"female","job":["QA"],"salary":"15000","group":{"name":"testing","level":"member"}}
+{"index":{"_id":"11"}}
+{"name":{"chinese":"赵阳阳","pinyin":"Zhao Yangyang","english":"Emma","nick":"杨总"},"age":18,"gender":"female","job":["QA"],"salary":"17000","group":{"name":"testing","level":"member"}}
+{"index":{"_id":"12"}}
+{"name":{"chinese":"李正龙","pinyin":"Li Zhenglong","english":"Jeffery","nick":null},"age":27,"gender":"male","job":["C# Programmer"],"salary":"5000","group":{"name":"cloud","level":"member"}}
+{"index":{"_id":"13"}}
+{"name":{"chinese":"阎琳","pinyin":"Yan Lin","english":"Branty","nick":"阎总"},"age":18,"gender":"female","job":["QA"],"salary":"19000","group":{"name":"testing","level":"member"}}
+{"index":{"_id":"14"}}
+{"name":{"chinese":"王静","pinyin":"Wang Jing","english":"Wendy","nick":null},"age":18,"gender":"female","job":["QA"],"salary":"16000","group":{"name":"testing","level":"member"}}
+{"index":{"_id":"15"}}
+{"name":{"chinese":"韩雨","pinyin":"Han Yu","english":"Gina","nick":"韩姐"},"age":30,"gender":"female","job":["QA"],"salary":"30000","group":{"name":"testing","level":"leader"}}
+{"index":{"_id":"16"}}
+{"name":{"chinese":"刘忠和","pinyin":"Liu Zhonghe","english":"Cruz","nick":"克总"},"age":24,"gender":"male","job":["Architect"],"salary":"28000","group":{"name":"server","level":"backbone"}}
+{"index":{"_id":"17"}}
+{"name":{"chinese":"胡森","pinyin":"Hu Sen","english":"Robert","nick":"胡叔叔"},"age":35,"gender":"male","job":["Architect"],"salary":"38000","group":{"name":"server","level":"leader"}}
+{"index":{"_id":"18"}}
+{"name":{"chinese":"谢庆虎","pinyin":"Xie Qinghu","english":"Experdot","nick":"虎子"},"age":24,"gender":"male","job":["C# Programmer","Forguncy Programmer"],"salary":"25000","group":{"name":"server","level":"backbone"}}
+{"index":{"_id":"19"}}
+{"name":{"chinese":"杨欣","pinyin":"Yang xin","english":"Daisy","nick":null},"age":18,"gender":"female","job":["UID"],"salary":"29000","group":{"name":"onboarding","level":"leader"}}
+{"index":{"_id":"20"}}
+{"name":{"chinese":"杨玉娟","pinyin":"Yang Yujuan","english":"Jessica","nick":null},"age":18,"gender":"female","job":["UID"],"salary":"23000","group":{"name":"onboarding","level":"member"}}
+{"index":{"_id":"21"}}
+{"name":{"chinese":"雷学斌","pinyin":"Lei Xuebin","english":"Barry","nick":null},"age":35,"gender":"male","job":["Project Manager", "Architect"],"salary":"40000","group":{"name":"dd3","level":"leader"}}
+
+# 查询插入情况
+POST staff/_count
+
+# 查询工资大于25000 小于 30000的所有人
+POST staff/_search
+{
+  "query": {
+    "range": {
+      "salary": {
+        "gte": 25000,
+        "lte": 30000
+      }
+    }
+  }
+}
+
+# 查询没有nickname的人
+POST staff/_search
+{
+  "query": {
+    "term": {
+      "name.nick": "NULL"
+    }
+  }
+}
+
+# 多字段查询 年龄在25-30之间并且薪水在25000-30000之间的人
+POST staff/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "range": {
+            "age": {
+              "gte": 25,
+              "lte": 30
+            }
+          }
+        },
+        {
+          "range": {
+            "salary": {
+              "gte": 25000,
+              "lte": 30000
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+# Metric 聚合，找到最低的工资
+POST staff/_search
+{
+  "size": 0,
+  "aggs": {
+    "min_salary": {
+      "min": {
+        "field":"salary"
+      }
+    }
+  }
+}
+
+# 同理查询最高工资
+POST staff/_search
+{
+  "size": 0,
+  "aggs": {
+    "max_salary": {
+      "max": {
+        "field":"salary"
+      }
+    }
+  }
+}
+
+# 聚合查询工资信息统计
+POST staff/_async_search
+{
+  "size": 0,
+  "aggs": {
+    "salary_stats": {
+      "stats": {
+        "field": "salary"
+      }
+    }
+  }
+}
+
+# 聚合工作职位
+POST staff/_async_search
+{
+  "size": 0,
+  "aggs": {
+    "job_stats": {
+      "terms": {
+        "field": "job.keyword"
+      }
+    }
+  }
+}
+
+# 对 性别的 keyword 进行聚合
+POST staff/_search
+{
+  "size": 0,
+  "aggs": {
+    "gender": {
+      "terms": {
+        "field":"gender"
+      }
+    }
+  }
+}
+
+# 对年龄的统计
+POST staff/_search
+{
+  "size": 0,
+  "aggs": {
+    "age_stats": {
+      "terms": {
+        "field":"age",
+        "size":100
+      }
+    }
+  }
+}
+
+# 聚合搜索不同工种工资最高的前两个人
+POST staff/_search
+{
+  "size": 0,
+  "aggs": {
+    "jobs": {
+      "terms": {
+        "field": "job.keyword"
+      },
+      "aggs": {
+        "top_salary": {
+          "top_hits": {
+            "size": 2,
+            "sort": [
+              {
+                "salary": {
+                  "order": "desc"
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+}
+
+# 按照工资区间分割员工
+POST staff/_search
+{
+  "size": 0,
+  "aggs": {
+    "salary_range": {
+      "range": {
+        "field": "salary",
+        "ranges": [
+          {
+            "to": 9999
+          },
+          {
+            "from": 10000,
+            "to": 20000
+          },
+          {
+            "from": 20000,
+            "to": 30000
+          },
+          {
+            "from": 30000,
+            "to": 40000
+          },
+          {
+            "from": 40000
+          }
+        ]
+      }
+    }
+  }
+}
+
+# 嵌套聚合，按照工作类型分桶，并统计工资信息
+POST staff/_search
+{
+  "size": 0,
+  "aggs": {
+    "Job_salary_stats": {
+      "terms": {
+        "field": "job.keyword"
+      },
+      "aggs": {
+        "salary": {
+          "stats": {
+            "field": "salary"
+          }
+        }
+      }
+    }
+  }
+}
+
+# 多次嵌套。根据工作类型分桶，然后按照性别分桶，计算工资的统计信息
+POST staff/_search
+{
+  "size": 0,
+  "aggs": {
+    "Job_gender_stats": {
+      "terms": {
+        "field": "job.keyword"
+      },
+      "aggs": {
+        "gender_stats": {
+          "terms": {
+            "field": "gender"
+          },
+          "aggs": {
+            "salary_stats": {
+              "stats": {
+                "field": "salary"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

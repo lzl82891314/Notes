@@ -296,4 +296,10 @@ docker-compose down
 
 ![kibana_metricbeat_data](https://raw.githubusercontent.com/lzl82891314/Notes/main/elk/resource/kibana_metricbeat_data.png)
 
+此外，如果首次运行elasticsearch是可能会报错：`max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]`，此时是系统中的最大虚拟内存设置过低，elasticsearch运行至少需要262144，因此可以执行以下命令解决：
+
+``` shell
+sysctl -w vm.max_map_count=262144
+```
+
 至此，整个监控系统的简单部署就结束了，之后的任务就是配置集群或者采集点了，这些工作其实都是操作对应的采集器的配置文件即可完成，由于写文档的时候还没有具体的服务实体，因此无法给出具体的配置，但是，只需要操作挂载出来的配置文件即可实现。
